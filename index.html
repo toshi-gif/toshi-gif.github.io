@@ -1,0 +1,169 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>薔薇が好き</title>
+    <meta
+      name="description"
+      content="薔薇が好き。日々の活動や気持ちを静かに残す、モノクロでシックな個人ブログ。"
+    />
+    <meta name="robots" content="index, follow" />
+    <link rel="canonical" href="https://toshi-gif.github.io/" />
+    <meta property="og:site_name" content="薔薇が好き" />
+    <meta property="og:title" content="薔薇が好き" />
+    <meta
+      property="og:description"
+      content="薔薇が好き。日々の活動や気持ちを静かに残す、モノクロでシックな個人ブログ。"
+    />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://toshi-gif.github.io/" />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header class="site-header" aria-label="サイトヘッダー">
+      <a class="brand" href="#" aria-label="薔薇が好き ホーム">
+        <span class="brand-mark" aria-hidden="true">R</span>
+        <span>
+          <strong>薔薇が好き</strong>
+          <small>rose private log</small>
+        </span>
+      </a>
+
+      <nav class="top-nav" aria-label="メインメニュー">
+        <a href="#today">Today</a>
+        <a href="#logs">Logs</a>
+        <a href="#profile">Profile</a>
+      </nav>
+    </header>
+
+    <main>
+      <section class="hero" aria-labelledby="site-title">
+        <div class="hero-visual" aria-hidden="true">
+          <div class="photo-frame photo-frame-main"></div>
+          <div class="photo-frame photo-frame-side"></div>
+        </div>
+
+        <div class="hero-copy">
+          <p class="eyebrow">Rose fan-site journal</p>
+          <h1 id="site-title">薔薇が好き。</h1>
+          <p>
+            その日に見た景色、聴いた音、出かけた場所、心に残ったこと。
+            薔薇を好きな気持ちごと、活動の記録を静かに積み上げる場所。
+          </p>
+          <div class="hero-actions" aria-label="主要操作">
+          <a class="button button-primary" href="#today">今日の活動を書く</a>
+            <a class="button button-secondary" href="#logs">投稿を見る</a>
+          </div>
+        </div>
+      </section>
+
+      <section class="ticker" aria-label="ステータス">
+        <span>Rose archive</span>
+        <span>Diary / Walk / Cafe / Study / Mood</span>
+        <span id="current-date">Today</span>
+      </section>
+
+      <section class="composer-section" id="today" aria-labelledby="composer-title">
+        <div class="section-heading">
+          <p class="eyebrow">Write today</p>
+          <h2 id="composer-title">今日の活動ログ</h2>
+        </div>
+
+        <form class="composer" id="post-form" action="#" method="post" autocomplete="off">
+          <label>
+            <span>タイトル</span>
+            <input
+              id="post-title"
+              name="title"
+              type="text"
+              maxlength="48"
+              placeholder="例：雨の日に見つけた白い薔薇"
+              required
+            />
+          </label>
+
+          <label>
+            <span>カテゴリ</span>
+            <select id="post-category" name="category">
+              <option>Daily</option>
+              <option>Rose</option>
+              <option>Study</option>
+              <option>Walk</option>
+              <option>Cafe</option>
+              <option>Mood</option>
+            </select>
+          </label>
+
+          <label class="wide">
+            <span>本文</span>
+            <textarea
+              id="post-body"
+              name="body"
+              rows="6"
+              maxlength="420"
+              placeholder="今日やったこと、感じたこと、残しておきたい一文など。"
+              required
+            ></textarea>
+          </label>
+
+          <button class="button button-primary wide" type="submit">
+            投稿を追加
+          </button>
+        </form>
+      </section>
+
+      <section class="log-section" id="logs" aria-labelledby="logs-title">
+        <div class="section-heading">
+          <p class="eyebrow">Activity archive</p>
+          <h2 id="logs-title">最近の投稿</h2>
+        </div>
+
+        <div class="filter-row" aria-label="投稿フィルター">
+          <button class="filter is-active" type="button" data-filter="All">All</button>
+          <button class="filter" type="button" data-filter="Daily">Daily</button>
+          <button class="filter" type="button" data-filter="Rose">Rose</button>
+          <button class="filter" type="button" data-filter="Study">Study</button>
+          <button class="filter" type="button" data-filter="Walk">Walk</button>
+          <button class="filter" type="button" data-filter="Cafe">Cafe</button>
+          <button class="filter" type="button" data-filter="Mood">Mood</button>
+        </div>
+
+        <div class="post-grid" id="post-grid" aria-live="polite"></div>
+      </section>
+
+      <section class="profile-section" id="profile" aria-labelledby="profile-title">
+        <div class="profile-portrait" aria-hidden="true"></div>
+        <div>
+          <p class="eyebrow">Owner profile</p>
+          <h2 id="profile-title">About this site</h2>
+          <p>
+            薔薇が好きな気持ちと、日常の断片を集める私用ホームページです。
+            活動ログ、アーカイブ、プロフィールを少しずつ育てていけます。
+          </p>
+          <dl class="profile-list">
+            <div>
+              <dt>Theme</dt>
+              <dd>Rose / Monochrome / Chic / Fan site</dd>
+            </div>
+            <div>
+              <dt>Updated</dt>
+              <dd>気が向いた日</dd>
+            </div>
+            <div>
+              <dt>Links</dt>
+              <dd>Instagram / X / YouTube</dd>
+            </div>
+          </dl>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <p>薔薇が好き</p>
+      <a href="#top">Back to top</a>
+    </footer>
+
+    <script src="script.js"></script>
+  </body>
+</html>
