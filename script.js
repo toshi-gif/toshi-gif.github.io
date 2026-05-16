@@ -5,6 +5,7 @@ const fallbackProfile = {
   theme: "Rose / Monochrome / Chic / Fan site",
   updated: "気が向いた日",
   links: "Instagram / X / YouTube",
+  image: "",
 };
 
 const postGrid = document.querySelector("#post-grid");
@@ -16,6 +17,7 @@ const profileCopy = document.querySelector("#profile-copy");
 const profileTheme = document.querySelector("#profile-theme");
 const profileUpdated = document.querySelector("#profile-updated");
 const profileLinks = document.querySelector("#profile-links");
+const profilePortrait = document.querySelector("#profile-portrait");
 const ownerLink = document.querySelector("#owner-link");
 
 let activeFilter = "All";
@@ -102,6 +104,14 @@ function renderProfile(profile) {
   profileTheme.textContent = profile.theme || fallbackProfile.theme;
   profileUpdated.textContent = profile.updated || fallbackProfile.updated;
   profileLinks.textContent = profile.links || fallbackProfile.links;
+
+  if (profile.image) {
+    profilePortrait.classList.add("has-image");
+    profilePortrait.innerHTML = `<img src="${escapeAttribute(profile.image)}" alt="プロフィール写真" />`;
+  } else {
+    profilePortrait.classList.remove("has-image");
+    profilePortrait.innerHTML = "";
+  }
 }
 
 function renderPosts() {
