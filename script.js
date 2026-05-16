@@ -1,20 +1,20 @@
-const seedPosts = [
+const fallbackPosts = [
   {
-    id: "sample-1",
+    id: "rose-2026-05-16",
     title: "駅前で見かけた深い赤",
     category: "Rose",
     body: "帰り道に花屋の前で足が止まった。黒に近い赤の薔薇が静かに目立っていて、今日の記録に残したくなった。",
     date: "2026.05.16",
   },
   {
-    id: "sample-2",
+    id: "cafe-2026-05-15",
     title: "カフェで作業した午後",
     category: "Cafe",
     body: "窓際の席で予定を整理。小さな達成がいくつか積み上がった日。次にやることも少しだけ見えた。",
     date: "2026.05.15",
   },
   {
-    id: "sample-3",
+    id: "daily-2026-05-14",
     title: "好きなものメモ",
     category: "Daily",
     body: "白黒写真、静かな店、深夜のラジオ、余白のあるデザイン。今の気分をまとめるとだいたいこのあたり。",
@@ -22,52 +22,39 @@ const seedPosts = [
   },
 ];
 
-const storageKey = "monochrome-days-posts";
 const postGrid = document.querySelector("#post-grid");
-const postForm = document.querySelector("#post-form");
+const latestPost = document.querySelector("#latest-post");
 const currentDate = document.querySelector("#current-date");
 const filterButtons = [...document.querySelectorAll(".filter")];
 
 let activeFilter = "All";
-let posts = loadPosts();
+let posts = [];
 
-function loadPosts() {
-  const savedPosts = readStoredPosts();
-
-  if (!savedPosts) {
-    return seedPosts;
-  }
-
+async function loadPosts() {
   try {
-    const parsedPosts = JSON.parse(savedPosts);
-    return Array.isArray(parsedPosts) ? parsedPosts : seedPosts;
+    const response = await fetch("posts.json", { cache: "no-store" });
+
+    if (!response.ok) {
+      return fallbackPosts;
+    }
+
+    const loadedPosts = await response.json();
+    return normalizePosts(loadedPosts);
   } catch {
-    return seedPosts;
+    return fallbackPosts;
   }
 }
 
-function savePosts() {
-  try {
-    localStorage.setItem(storageKey, JSON.stringify(posts));
-  } catch {
-    try {
-      sessionStorage.setItem(storageKey, JSON.stringify(posts));
-    } catch {
-      return;
-    }
+function normalizePosts(loadedPosts) {
+  if (!Array.isArray(loadedPosts)) {
+    return fallbackPosts;
   }
-}
 
-function readStoredPosts() {
-  try {
-    return localStorage.getItem(storageKey) || sessionStorage.getItem(storageKey);
-  } catch {
-    try {
-      return sessionStorage.getItem(storageKey);
-    } catch {
-      return null;
-    }
-  }
+  const validPosts = loadedPosts.filter(
+    (post) => post.id && post.title && post.category && post.body && post.date,
+  );
+
+  return validPosts.length > 0 ? validPosts : fallbackPosts;
 }
 
 function formatDate(date = new Date()) {
@@ -78,6 +65,28 @@ function formatDate(date = new Date()) {
   })
     .format(date)
     .replaceAll("/", ".");
+}
+
+function renderLatestPost() {
+  const post = posts[0];
+
+  if (!post) {
+    latestPost.innerHTML = `
+      <div class="post-meta"><span>Empty</span><span>${formatDate()}</span></div>
+      <h3>まだ投稿がありません</h3>
+      <p>最初の活動ログを追加すると、ここに表示されます。</p>
+    `;
+    return;
+  }
+
+  latestPost.innerHTML = `
+    <div class="post-meta">
+      <span>${escapeHtml(post.category)}</span>
+      <time datetime="${dateTimeValue(post.date)}">${escapeHtml(post.date)}</time>
+    </div>
+    <h3>${escapeHtml(post.title)}</h3>
+    <p>${escapeHtml(post.body)}</p>
+  `;
 }
 
 function renderPosts() {
@@ -95,7 +104,7 @@ function renderPosts() {
         <div class="post-content">
           <div class="post-meta"><span>Empty</span><span>${activeFilter}</span></div>
           <h3>まだ投稿がありません</h3>
-          <p>このカテゴリの記録を追加すると、ここに表示されます。</p>
+          <p>このカテゴリの活動ログを追加すると、ここに表示されます。</p>
         </div>
       </article>
     `;
@@ -109,66 +118,29 @@ function renderPosts() {
       <div class="post-art"></div>
       <div class="post-content">
         <div class="post-meta">
-          <span>${post.category}</span>
-          <time datetime="${post.date.replaceAll(".", "-")}">${post.date}</time>
+          <span>${escapeHtml(post.category)}</span>
+          <time datetime="${dateTimeValue(post.date)}">${escapeHtml(post.date)}</time>
         </div>
         <h3>${escapeHtml(post.title)}</h3>
         <p>${escapeHtml(post.body)}</p>
-        <button class="delete-post" type="button" data-id="${post.id}">削除</button>
       </div>
     `;
     postGrid.append(card);
   });
 }
 
+function dateTimeValue(date) {
+  return date.replaceAll(".", "-");
+}
+
 function escapeHtml(text) {
-  return text
+  return String(text)
     .replaceAll("&", "&amp;")
     .replaceAll("<", "&lt;")
     .replaceAll(">", "&gt;")
     .replaceAll('"', "&quot;")
     .replaceAll("'", "&#039;");
 }
-
-postForm.addEventListener("submit", (event) => {
-  event.preventDefault();
-  event.stopPropagation();
-
-  const formData = new FormData(postForm);
-  const post = {
-    id: createPostId(),
-    title: formData.get("title").trim(),
-    category: formData.get("category"),
-    body: formData.get("body").trim(),
-    date: formatDate(),
-  };
-
-  posts = [post, ...posts];
-  savePosts();
-  postForm.reset();
-  renderPosts();
-  document.querySelector("#logs").scrollIntoView({ behavior: "smooth" });
-});
-
-function createPostId() {
-  if (globalThis.crypto?.randomUUID) {
-    return globalThis.crypto.randomUUID();
-  }
-
-  return `post-${Date.now()}-${Math.random().toString(16).slice(2)}`;
-}
-
-postGrid.addEventListener("click", (event) => {
-  const deleteButton = event.target.closest(".delete-post");
-
-  if (!deleteButton) {
-    return;
-  }
-
-  posts = posts.filter((post) => post.id !== deleteButton.dataset.id);
-  savePosts();
-  renderPosts();
-});
 
 filterButtons.forEach((button) => {
   button.addEventListener("click", () => {
@@ -178,5 +150,11 @@ filterButtons.forEach((button) => {
   });
 });
 
-currentDate.textContent = formatDate();
-renderPosts();
+async function init() {
+  currentDate.textContent = formatDate();
+  posts = await loadPosts();
+  renderLatestPost();
+  renderPosts();
+}
+
+init();

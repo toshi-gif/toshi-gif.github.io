@@ -52,7 +52,7 @@
             薔薇を好きな気持ちごと、活動の記録を静かに積み上げる場所。
           </p>
           <div class="hero-actions" aria-label="主要操作">
-          <a class="button button-primary" href="#today">今日の活動を書く</a>
+            <a class="button button-primary" href="admin.html">活動ログを追加</a>
             <a class="button button-secondary" href="#logs">投稿を見る</a>
           </div>
         </div>
@@ -64,53 +64,13 @@
         <span id="current-date">Today</span>
       </section>
 
-      <section class="composer-section" id="today" aria-labelledby="composer-title">
+      <section class="composer-section latest-section" id="today" aria-labelledby="composer-title">
         <div class="section-heading">
-          <p class="eyebrow">Write today</p>
-          <h2 id="composer-title">今日の活動ログ</h2>
+          <p class="eyebrow">Latest note</p>
+          <h2 id="composer-title">最新の活動</h2>
         </div>
 
-        <form class="composer" id="post-form" action="#" method="post" autocomplete="off">
-          <label>
-            <span>タイトル</span>
-            <input
-              id="post-title"
-              name="title"
-              type="text"
-              maxlength="48"
-              placeholder="例：雨の日に見つけた白い薔薇"
-              required
-            />
-          </label>
-
-          <label>
-            <span>カテゴリ</span>
-            <select id="post-category" name="category">
-              <option>Daily</option>
-              <option>Rose</option>
-              <option>Study</option>
-              <option>Walk</option>
-              <option>Cafe</option>
-              <option>Mood</option>
-            </select>
-          </label>
-
-          <label class="wide">
-            <span>本文</span>
-            <textarea
-              id="post-body"
-              name="body"
-              rows="6"
-              maxlength="420"
-              placeholder="今日やったこと、感じたこと、残しておきたい一文など。"
-              required
-            ></textarea>
-          </label>
-
-          <button class="button button-primary wide" type="submit">
-            投稿を追加
-          </button>
-        </form>
+        <article class="featured-post" id="latest-post" aria-live="polite"></article>
       </section>
 
       <section class="log-section" id="logs" aria-labelledby="logs-title">
@@ -161,7 +121,7 @@
 
     <footer class="site-footer">
       <p>薔薇が好き</p>
-      <a href="#top">Back to top</a>
+      <a href="admin.html">Update</a>
     </footer>
 
     <script src="script.js"></script>
