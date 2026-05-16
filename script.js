@@ -16,6 +16,7 @@ const profileCopy = document.querySelector("#profile-copy");
 const profileTheme = document.querySelector("#profile-theme");
 const profileUpdated = document.querySelector("#profile-updated");
 const profileLinks = document.querySelector("#profile-links");
+const ownerLink = document.querySelector("#owner-link");
 
 let activeFilter = "All";
 let posts = [];
@@ -172,7 +173,24 @@ filterButtons.forEach((button) => {
   });
 });
 
+function setupOwnerMode() {
+  const params = new URLSearchParams(window.location.search);
+
+  if (params.get("owner") === "1") {
+    localStorage.setItem("rose-owner-mode", "on");
+  }
+
+  if (params.get("owner") === "0") {
+    localStorage.removeItem("rose-owner-mode");
+  }
+
+  if (ownerLink && localStorage.getItem("rose-owner-mode") === "on") {
+    ownerLink.hidden = false;
+  }
+}
+
 async function init() {
+  setupOwnerMode();
   currentDate.textContent = formatDate();
   const [loadedPosts, profile] = await Promise.all([loadPosts(), loadProfile()]);
   posts = loadedPosts;

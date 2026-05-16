@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>記事投稿 - 薔薇が好き</title>
+    <meta name="robots" content="noindex, nofollow" />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header class="site-header" aria-label="サイトヘッダー">
+      <a class="brand" href="owner.html" aria-label="更新メニュー">
+        <span class="brand-mark" aria-hidden="true">R</span>
+        <span>
+          <strong>薔薇が好き</strong>
+          <small>new post</small>
+        </span>
+      </a>
+
+      <nav class="top-nav" aria-label="メインメニュー">
+        <a href="owner.html">Owner</a>
+        <a href="profile-edit.html">Profile</a>
+        <a href="index.html#logs">Logs</a>
+      </nav>
+    </header>
+
+    <main>
+      <section class="admin-hero" aria-labelledby="post-title">
+        <p class="eyebrow">New post</p>
+        <h1 id="post-title">記事を投稿</h1>
+        <p>写真を選ぶと、画像も含めた `posts.json` を作れます。</p>
+      </section>
+
+      <section class="composer-section" aria-labelledby="new-post-title">
+        <div class="section-heading">
+          <p class="eyebrow">Activity log</p>
+          <h2 id="new-post-title">新しい投稿</h2>
+        </div>
+
+        <form class="composer" id="post-form" action="#" method="post" autocomplete="off">
+          <label>
+            <span>タイトル</span>
+            <input
+              id="post-title-input"
+              name="title"
+              type="text"
+              maxlength="48"
+              placeholder="例：雨の日に見つけた白い薔薇"
+              required
+            />
+          </label>
+
+          <label>
+            <span>カテゴリ</span>
+            <select id="post-category" name="category">
+              <option>Daily</option>
+              <option>Rose</option>
+              <option>Study</option>
+              <option>Walk</option>
+              <option>Cafe</option>
+              <option>Mood</option>
+            </select>
+          </label>
+
+          <label>
+            <span>日付</span>
+            <input id="post-date" name="date" type="date" required />
+          </label>
+
+          <label class="wide">
+            <span>写真を選ぶ</span>
+            <input id="post-image" name="image" type="file" accept="image/*" />
+          </label>
+
+          <div class="upload-preview wide" id="image-preview" hidden>
+            <img id="image-preview-img" alt="選択した写真のプレビュー" />
+          </div>
+
+          <label class="wide">
+            <span>本文</span>
+            <textarea
+              id="post-body"
+              name="body"
+              rows="6"
+              maxlength="420"
+              placeholder="今日やったこと、感じたこと、残しておきたい一文など。"
+              required
+            ></textarea>
+          </label>
+
+          <button class="button button-primary wide" type="submit">
+            posts.jsonを作成
+          </button>
+        </form>
+
+        <div class="download-panel" id="download-panel" hidden>
+          <p id="download-status"></p>
+          <a class="button button-primary" id="download-link" href="#" download="posts.json">
+            posts.jsonをダウンロード
+          </a>
+        </div>
+
+        <div class="note-panel">
+          <p>ダウンロードした `posts.json` をGitHubにアップロードして上書きすると、公開サイトに反映されます。</p>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <p>薔薇が好き</p>
+      <a href="owner.html">Back to owner</a>
+    </footer>
+
+    <script src="post.js"></script>
+  </body>
+</html>

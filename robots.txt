@@ -1,4 +1,7 @@
 User-agent: *
 Allow: /
 Disallow: /admin.html
+Disallow: /owner.html
+Disallow: /post.html
+Disallow: /profile-edit.html
 Sitemap: https://toshi-gif.github.io/sitemap.xml
