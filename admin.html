@@ -28,7 +28,7 @@
         <p class="eyebrow">Owner update</p>
         <h1 id="admin-title">活動ログを追加</h1>
         <p>
-          ここで新しい記事データを作れます。作成した `posts.json` をGitHubにアップロードすると、公開サイトの投稿が全員に反映されます。
+          ここで記事とプロフィールのデータを作れます。作成したファイルをGitHubにアップロードすると、公開サイトに反映されます。
         </p>
       </section>
 
@@ -99,6 +99,83 @@
           <p id="download-status"></p>
           <a class="button button-primary" id="download-link" href="#" download="posts.json">
             posts.jsonをダウンロード
+          </a>
+        </div>
+      </section>
+
+      <section class="composer-section" aria-labelledby="profile-edit-title">
+        <div class="section-heading">
+          <p class="eyebrow">Profile</p>
+          <h2 id="profile-edit-title">プロフィール更新</h2>
+        </div>
+
+        <form class="composer profile-editor" id="profile-form" action="#" method="post" autocomplete="off">
+          <label>
+            <span>見出し</span>
+            <input
+              id="profile-title-input"
+              name="title"
+              type="text"
+              maxlength="48"
+              placeholder="例：About me"
+              required
+            />
+          </label>
+
+          <label>
+            <span>更新日・頻度</span>
+            <input
+              id="profile-updated-input"
+              name="updated"
+              type="text"
+              maxlength="48"
+              placeholder="例：気が向いた日"
+            />
+          </label>
+
+          <label class="wide">
+            <span>紹介文</span>
+            <textarea
+              id="profile-copy-input"
+              name="copy"
+              rows="5"
+              maxlength="360"
+              placeholder="自分のこと、このサイトのこと、好きなものなど。"
+              required
+            ></textarea>
+          </label>
+
+          <label>
+            <span>テーマ</span>
+            <input
+              id="profile-theme-input"
+              name="theme"
+              type="text"
+              maxlength="80"
+              placeholder="例：Rose / Monochrome / Diary"
+            />
+          </label>
+
+          <label>
+            <span>リンク</span>
+            <input
+              id="profile-links-input"
+              name="links"
+              type="text"
+              maxlength="120"
+              placeholder="例：Instagram / X / YouTube"
+            />
+          </label>
+
+          <button class="button button-primary wide" type="submit">
+            profile.jsonを作成
+          </button>
+        </form>
+
+        <div class="download-panel" id="profile-download-panel" hidden>
+          <p id="profile-download-status"></p>
+          <a class="button button-primary" id="profile-download-link" href="#" download="profile.json">
+            profile.jsonをダウンロード
           </a>
         </div>
       </section>

@@ -1,31 +1,21 @@
-const fallbackPosts = [
-  {
-    id: "rose-2026-05-16",
-    title: "駅前で見かけた深い赤",
-    category: "Rose",
-    body: "帰り道に花屋の前で足が止まった。黒に近い赤の薔薇が静かに目立っていて、今日の記録に残したくなった。",
-    date: "2026.05.16",
-  },
-  {
-    id: "cafe-2026-05-15",
-    title: "カフェで作業した午後",
-    category: "Cafe",
-    body: "窓際の席で予定を整理。小さな達成がいくつか積み上がった日。次にやることも少しだけ見えた。",
-    date: "2026.05.15",
-  },
-  {
-    id: "daily-2026-05-14",
-    title: "好きなものメモ",
-    category: "Daily",
-    body: "白黒写真、静かな店、深夜のラジオ、余白のあるデザイン。今の気分をまとめるとだいたいこのあたり。",
-    date: "2026.05.14",
-  },
-];
+const fallbackPosts = [];
+const fallbackProfile = {
+  title: "About this site",
+  copy: "薔薇が好きな気持ちと、日常の断片を集める私用ホームページです。活動ログ、アーカイブ、プロフィールを少しずつ育てていけます。",
+  theme: "Rose / Monochrome / Chic / Fan site",
+  updated: "気が向いた日",
+  links: "Instagram / X / YouTube",
+};
 
 const postGrid = document.querySelector("#post-grid");
 const latestPost = document.querySelector("#latest-post");
 const currentDate = document.querySelector("#current-date");
 const filterButtons = [...document.querySelectorAll(".filter")];
+const profileTitle = document.querySelector("#profile-title");
+const profileCopy = document.querySelector("#profile-copy");
+const profileTheme = document.querySelector("#profile-theme");
+const profileUpdated = document.querySelector("#profile-updated");
+const profileLinks = document.querySelector("#profile-links");
 
 let activeFilter = "All";
 let posts = [];
@@ -55,6 +45,21 @@ function normalizePosts(loadedPosts) {
   );
 
   return validPosts.length > 0 ? validPosts : fallbackPosts;
+}
+
+async function loadProfile() {
+  try {
+    const response = await fetch("profile.json", { cache: "no-store" });
+
+    if (!response.ok) {
+      return fallbackProfile;
+    }
+
+    const profile = await response.json();
+    return { ...fallbackProfile, ...profile };
+  } catch {
+    return fallbackProfile;
+  }
 }
 
 function formatDate(date = new Date()) {
@@ -88,6 +93,14 @@ function renderLatestPost() {
     <h3>${escapeHtml(post.title)}</h3>
     <p>${escapeHtml(post.body)}</p>
   `;
+}
+
+function renderProfile(profile) {
+  profileTitle.textContent = profile.title || fallbackProfile.title;
+  profileCopy.textContent = profile.copy || fallbackProfile.copy;
+  profileTheme.textContent = profile.theme || fallbackProfile.theme;
+  profileUpdated.textContent = profile.updated || fallbackProfile.updated;
+  profileLinks.textContent = profile.links || fallbackProfile.links;
 }
 
 function renderPosts() {
@@ -161,7 +174,9 @@ filterButtons.forEach((button) => {
 
 async function init() {
   currentDate.textContent = formatDate();
-  posts = await loadPosts();
+  const [loadedPosts, profile] = await Promise.all([loadPosts(), loadProfile()]);
+  posts = loadedPosts;
+  renderProfile(profile);
   renderLatestPost();
   renderPosts();
 }
