@@ -80,6 +80,7 @@ function renderLatestPost() {
   }
 
   latestPost.innerHTML = `
+    ${post.image ? `<div class="featured-media">${postImage(post)}</div>` : ""}
     <div class="post-meta">
       <span>${escapeHtml(post.category)}</span>
       <time datetime="${dateTimeValue(post.date)}">${escapeHtml(post.date)}</time>
@@ -115,7 +116,7 @@ function renderPosts() {
     const card = document.createElement("article");
     card.className = "post-card";
     card.innerHTML = `
-      <div class="post-art"></div>
+      <div class="post-art">${post.image ? postImage(post) : ""}</div>
       <div class="post-content">
         <div class="post-meta">
           <span>${escapeHtml(post.category)}</span>
@@ -129,6 +130,10 @@ function renderPosts() {
   });
 }
 
+function postImage(post) {
+  return `<img src="${escapeAttribute(post.image)}" alt="${escapeAttribute(post.title)}" loading="lazy" />`;
+}
+
 function dateTimeValue(date) {
   return date.replaceAll(".", "-");
 }
@@ -140,6 +145,10 @@ function escapeHtml(text) {
     .replaceAll(">", "&gt;")
     .replaceAll('"', "&quot;")
     .replaceAll("'", "&#039;");
+}
+
+function escapeAttribute(text) {
+  return escapeHtml(text).replaceAll("`", "&#096;");
 }
 
 filterButtons.forEach((button) => {

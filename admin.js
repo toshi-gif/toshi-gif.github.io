@@ -67,6 +67,11 @@ adminForm.addEventListener("submit", (event) => {
     body: formData.get("body").trim(),
     date: displayDate(date),
   };
+  const image = formData.get("image").trim();
+
+  if (image) {
+    newPost.image = image;
+  }
 
   const nextPosts = [newPost, ...currentPosts.filter((post) => post.id !== newPost.id)];
   createDownload(nextPosts);
